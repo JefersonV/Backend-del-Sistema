@@ -5,6 +5,7 @@ const {
   insertSale,
   getPrecioVenta,
   deleteSaleQ,
+  updateSaleQ,
 } = require("../querys");
 
 //controlador pagina inicio
@@ -80,6 +81,50 @@ const createSales = async (req, res) => {
   }
 };
 
+//contralador para actulizar una venta
+const updateSale = async (req, res) => {
+  const { id } = req.params;
+  const {
+    cantidad,
+    descripcion,
+    descuento,
+    id_factura,
+    id_cliente,
+    id_producto,
+    id_modo_pago,
+    id_usuario,
+  } = req.body;
+  //Obtener la fecha actual de la PC
+  let date = new Date();
+  let fecha = date.toLocaleDateString();
+  //Consulta a la base de datos para obtener precioVenta para calcular subtotal y total
+  const resultPrecio = await pool.query(getPrecioVenta);
+  const precioVenta = resultPrecio.rows[0].precio_venta;
+  //Calculo de subtotal y total
+  const subtotal = cantidad * precioVenta;
+  const total = cantidad * precioVenta - descuento;
+
+  try {
+    const result = await pool.query(updateSaleQ, [
+      fecha,
+      cantidad,
+      descripcion,
+      descuento,
+      subtotal,
+      total,
+      id_factura,
+      id_cliente,
+      id_producto,
+      id_modo_pago,
+      id_usuario,
+      id,
+    ]);
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
 //controlador para eliminar una venta
 const deleteSale = async (req, res) => {
   const { id } = req.params;
@@ -99,4 +144,5 @@ module.exports = {
   getSale,
   deleteSale,
   createSales,
+  updateSale,
 };

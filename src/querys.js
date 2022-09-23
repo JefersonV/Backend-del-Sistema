@@ -21,10 +21,16 @@ const getPrecioVenta = `SELECT precio_venta FROM producto`;
 
 const deleteSaleQ = `DELETE FROM venta WHERE id_venta = $1`;
 
+const updateSaleQ = `UPDATE venta SET 
+fecha = $1, cantidad = $2, descripcion = $3, descuento = $4, subtotal  = $5, total = $6, 
+id_factura = $7, id_cliente = $8, id_producto = $9, id_modo_pago = $10, id_usuario = $11
+WHERE id_venta = $12 RETURNING *`;
+
 module.exports = {
   getSales,
   getSaleQ,
   insertSale,
   getPrecioVenta,
   deleteSaleQ,
+  updateSaleQ,
 };
