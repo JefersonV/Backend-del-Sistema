@@ -2,10 +2,9 @@ const pool = require("../db");
 const {
   getSales,
   getSaleQ,
-  insertSale,
-  getPrecioVenta,
   deleteSaleQ,
   updateSaleQ,
+  insertSaleQ,
 } = require("../querys");
 
 //controlador pagina inicio
@@ -51,24 +50,11 @@ const createSales = async (req, res) => {
     id_usuario,
   } = req.body;
 
-  //Obtener la fecha actual de la PC
-  let date = new Date();
-  let fecha = date.toLocaleDateString();
-  //Consulta a la base de datos para obtener precioVenta para calcular subtotal y total
-  const resultPrecio = await pool.query(getPrecioVenta);
-  const precioVenta = resultPrecio.rows[0].precio_venta;
-  //Calculo de subtotal y total
-  const subtotal = cantidad * precioVenta;
-  const total = cantidad * precioVenta - descuento;
-
   try {
-    await pool.query(insertSale, [
-      fecha,
+    await pool.query(insertSaleQ, [
       cantidad,
       descripcion,
       descuento,
-      subtotal,
-      total,
       id_factura,
       id_cliente,
       id_producto,
@@ -94,32 +80,20 @@ const updateSale = async (req, res) => {
     id_modo_pago,
     id_usuario,
   } = req.body;
-  //Obtener la fecha actual de la PC
-  let date = new Date();
-  let fecha = date.toLocaleDateString();
-  //Consulta a la base de datos para obtener precioVenta para calcular subtotal y total
-  const resultPrecio = await pool.query(getPrecioVenta);
-  const precioVenta = resultPrecio.rows[0].precio_venta;
-  //Calculo de subtotal y total
-  const subtotal = cantidad * precioVenta;
-  const total = cantidad * precioVenta - descuento;
 
   try {
-    const result = await pool.query(updateSaleQ, [
-      fecha,
+    await pool.query(updateSaleQ, [
+      id,
       cantidad,
       descripcion,
       descuento,
-      subtotal,
-      total,
       id_factura,
       id_cliente,
       id_producto,
       id_modo_pago,
       id_usuario,
-      id,
     ]);
-    res.json(result.rows[0]);
+    res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
   }

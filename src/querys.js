@@ -1,36 +1,24 @@
-const getSales = `SELECT id_venta, fecha, cantidad, descripcion, descuento, subtotal, total, 
-  (SELECT nombre as cliente FROM cliente WHERE venta.id_cliente = cliente.id_cliente), 
-  (SELECT observaciones as factura FROM factura WHERE venta.id_factura = factura.id_factura), 
-  (SELECT nombre as producto FROM producto WHERE venta.id_producto = producto.id_producto), 
-  (SELECT nombre as modo_pago FROM modo_pago WHERE venta.id_modo_pago = modo_pago.id_modo_pago), 
-  (SELECT nombre as vendedor FROM usuario WHERE venta.id_usuario = usuario.id_usuario) 
-  FROM venta`;
-const getSaleQ = `SELECT id_venta, fecha, cantidad, descripcion, descuento, subtotal, total, 
-  (SELECT nombre as cliente FROM cliente WHERE venta.id_cliente = cliente.id_cliente), 
-  (SELECT observaciones as factura FROM factura WHERE venta.id_factura = factura.id_factura), 
-  (SELECT nombre as producto FROM producto WHERE venta.id_producto = producto.id_producto), 
-  (SELECT nombre as modo_pago FROM modo_pago WHERE venta.id_modo_pago = modo_pago.id_modo_pago), 
-  (SELECT nombre as vendedor FROM usuario WHERE venta.id_usuario = usuario.id_usuario) 
-  FROM venta WHERE id_venta = $1`;
+//Query que llama una funcion desde postgres para obtener todas las ventas
+const getSales = `SELECT * FROM getallsales()`;
 
-const insertSale = `INSERT INTO venta
-(fecha, cantidad, descripcion, descuento, subtotal, total, id_factura, id_cliente, id_producto, id_modo_pago, id_usuario)
-VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+//Query que llama una funcion desde postgres para obtener una  venta por id
+const getSaleQ = `SELECT * FROM getsale($1)`;
 
-const getPrecioVenta = `SELECT precio_venta FROM producto`;
+//Query que llama una funcion desde postgres para insertar una venta
+const insertSaleQ = `SELECT insertSale($1, $2, $3, $4, $5, $6, $7, $8)`;
 
+//Query para eliminar una venta por id
 const deleteSaleQ = `DELETE FROM venta WHERE id_venta = $1`;
 
-const updateSaleQ = `UPDATE venta SET 
-fecha = $1, cantidad = $2, descripcion = $3, descuento = $4, subtotal  = $5, total = $6, 
-id_factura = $7, id_cliente = $8, id_producto = $9, id_modo_pago = $10, id_usuario = $11
-WHERE id_venta = $12 RETURNING *`;
+//Query que llama una funcion desde postgres para actualizar una venta
+//--updateSale(id_v, cantidad, descrpcion, descuento, id_factura. id_cliente, id_producto, id_modo_pago, id_usuario)
+//SELECT updateSale(10, 2, 'CAFE Prueba', 10, 1, 1, 2, 2, 2);
+const updateSaleQ = `SELECT updateSale($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
 
 module.exports = {
   getSales,
   getSaleQ,
-  insertSale,
-  getPrecioVenta,
+  insertSaleQ,
   deleteSaleQ,
   updateSaleQ,
 };
