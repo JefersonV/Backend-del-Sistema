@@ -97,7 +97,7 @@ const updateSale = async (req, res, next) => {
     ]);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(500);
+    next(error);
   }
 };
 
