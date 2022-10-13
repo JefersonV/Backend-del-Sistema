@@ -7,18 +7,13 @@ const {
   createSales,
   updateSale,
 } = require("../controllers/sales.controllers");
-const router = Router();
+const routerSales = Router();
 
-router.get("/", home);
+routerSales.get("/", home);
 
-router.get("/sales", getAllSales);
-
-router.get("/sales/:id", getSale);
-
-router.post("/sales", createSales);
-
-router.put("/sales/:id", updateSale);
-
-router.delete("/sales/:id", deleteSale);
-
-module.exports = router;
+routerSales.get("/sales", getAllSales);
+routerSales.get("/sales/:id", getSale);
+routerSales.post("/sales", createSales);
+routerSales.put("/sales/:id", updateSale);
+routerSales.delete("/sales/:id", deleteSale);
+module.exports = routerSales;
