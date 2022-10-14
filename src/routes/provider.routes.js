@@ -6,6 +6,7 @@ const {
   updateProvider,
   deleteProvider,
 } = require("../controllers/providers.controllers");
+const authorization = require("../middleware/authorization");
 
 const routerProvider = Router();
 

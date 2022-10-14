@@ -7,6 +7,7 @@ const {
   deleteProduct,
   createProduct,
 } = require("../controllers/inventory.controllers");
+const authorization = require("../middleware/authorization");
 
 const routerInventory = Router();
 

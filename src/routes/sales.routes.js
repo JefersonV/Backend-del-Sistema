@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const authorization = require("../middleware/authorization");
 const {
   home,
   getAllSales,
