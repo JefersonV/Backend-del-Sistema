@@ -3,6 +3,8 @@ const {
   getAllRawMaterialsQ,
   getRawMaterialQ,
   deleteRawMaterialQ,
+  createRawMaterialQ,
+  updateRawMaterialQ,
 } = require("../querys");
 
 //Obtener todos los registros
@@ -31,22 +33,34 @@ const getRawMaterial = async (req, res, next) => {
   }
 };
 
-//Crear o ingresar materia prima FALTA
+//Crear o ingresar materia prima
 const createRawMaterial = async (req, res, next) => {
-  const {} = req.body;
+  const { id_tipo_materia, cantidad, id_unidad_medida, costo } = req.body;
   try {
-    await pool.query("", []);
+    await pool.query(createRawMaterialQ, [
+      id_tipo_materia,
+      cantidad,
+      id_unidad_medida,
+      costo,
+    ]);
     res.sendStatus(204);
   } catch (error) {
     next(error);
   }
 };
 
-//Actualizar matera prima FALTA
+//Actualizar matera prima
 const updateRawMaterial = async (req, res, next) => {
-  const {} = req.body;
+  const { id } = req.params;
+  const { id_tipo_materia, cantidad, id_unidad_medida, costo } = req.body;
   try {
-    await pool.query("", []);
+    await pool.query(updateRawMaterialQ, [
+      id_tipo_materia,
+      cantidad,
+      id_unidad_medida,
+      costo,
+      id,
+    ]);
     res.sendStatus(204);
   } catch (error) {
     next(error);

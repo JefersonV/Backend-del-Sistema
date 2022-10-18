@@ -3,6 +3,8 @@ const {
   getAllPackingMaterialQ,
   getPackingMaterialQ,
   deletePackingMaterialQ,
+  createPackingMaterialQ,
+  updatePackingMaterialQ,
 } = require("../querys");
 
 //Obtener todas los materiales de empaque
@@ -31,22 +33,23 @@ const getPackingMaterial = async (req, res, next) => {
   }
 };
 
-//Crear o ingresar material de empque FALTA
+//Crear o ingresar material de empque
 const createPackingMaterial = async (req, res, next) => {
-  const {} = req.body;
+  const { costo, tipo_empaque } = req.body;
   try {
-    await pool.query("", []);
+    await pool.query(createPackingMaterialQ, [costo, tipo_empaque]);
     res.sendStatus(204);
   } catch (error) {
     next(error);
   }
 };
 
-//Acutalizar registro material empaque FALTA
+//Acutalizar registro material empaque
 const updatePackingMaterial = async (req, res, next) => {
-  const {} = req.body;
+  const { id } = req.params;
+  const { costo, tipo_empaque } = req.body;
   try {
-    await pool.query("", []);
+    await pool.query(updatePackingMaterialQ, [costo, tipo_empaque, id]);
     res.sendStatus(204);
   } catch (error) {
     next(error);

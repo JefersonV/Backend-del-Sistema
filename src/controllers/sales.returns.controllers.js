@@ -1,9 +1,10 @@
 const pool = require("../db");
+const { getAllReturnsSalesQ } = require("../querys");
 
 //Obtener todos los registros
 const getAllReturns = async (req, res, next) => {
   try {
-    const result = await pool.query("");
+    const result = await pool.query(getAllReturnsSalesQ);
     res.json(result.rows);
   } catch (error) {
     next(error);

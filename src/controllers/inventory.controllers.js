@@ -4,6 +4,8 @@ const {
   getAllProductsQ,
   getProductQ,
   deleteProductQ,
+  createProductQ,
+  updateProductQ,
 } = require("../querys");
 
 //Obtener los movimientos del inventario
@@ -42,39 +44,55 @@ const getProduct = async (req, res, next) => {
   }
 };
 
-//Crear o ingresar producto Falta completar
+//Crear o ingresar producto
 const createProduct = async (req, res, next) => {
   const {
     nombre,
     stock_ingreso,
+    unidad_medida,
     tipo_producto,
-    stock_actual,
     precio_venta,
     stock_minimo,
-    id_costo_produccion,
   } = req.body;
 
   try {
-    //await pool.query(,[])
+    await pool.query(createProductQ, [
+      nombre,
+      stock_ingreso,
+      unidad_medida,
+      tipo_producto,
+      precio_venta,
+      stock_minimo,
+    ]);
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
 };
 
-//Actualizar registro de producto Falta completar
+//Actualizar registro de producto
 const updateProduct = async (req, res, next) => {
+  const { id } = req.params;
   const {
     nombre,
     stock_ingreso,
+    unidad_medida,
     tipo_producto,
-    stock_actual,
     precio_venta,
     stock_minimo,
-    id_costo_produccion,
   } = req.body;
 
   try {
-    //await pool.query();
+    await pool.query(updateProductQ, [
+      id,
+      nombre,
+      stock_ingreso,
+      unidad_medida,
+      tipo_producto,
+      precio_venta,
+      stock_minimo,
+    ]);
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

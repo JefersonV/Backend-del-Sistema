@@ -1,9 +1,10 @@
 const pool = require("../db");
+const { getAllReturnsProvidersQ } = require("../querys");
 
 //Obtener todos los registros
 const getAllReturns = async (req, res, next) => {
   try {
-    const result = await pool.query("");
+    const result = await pool.query(getAllReturnsProvidersQ);
     res.json(result.rows);
   } catch (error) {
     next(error);
@@ -18,7 +19,7 @@ const getReturn = async (req, res, next) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        message: "Devulucion no econtrada",
+        message: "Devolucion no econtrada",
       });
     }
     res.json(result.rows[0]);
@@ -27,7 +28,7 @@ const getReturn = async (req, res, next) => {
   }
 };
 
-//Crear o registrar
+//Crear o registrar PENDIENTE
 const createReturn = async (req, res, next) => {
   const {} = req.body;
 
@@ -39,7 +40,7 @@ const createReturn = async (req, res, next) => {
   }
 };
 
-//Actualizar un registro
+//Actualizar un registro PEDIENTE
 const updateReturn = async (req, res, next) => {
   const { id } = req.params;
   const {} = req.body;
@@ -52,7 +53,7 @@ const updateReturn = async (req, res, next) => {
   }
 };
 
-//Eliminar un registro
+//Eliminar un registro PENDIENTE
 const deleteReturn = async (req, res, next) => {
   const { id } = req.params;
   try {
