@@ -6,13 +6,33 @@ const {
   updateReturn,
   deleteReturn,
 } = require("../controllers/sales.returns.controllers");
-
+const authorization = require("../middleware/authorization");
 const routerSalesReturns = Router();
 
-routerSalesReturns.get("/inventory/sales_returns", getAllReturns);
-routerSalesReturns.get("/inventory/sales_returns/:id", getReturn);
-routerSalesReturns.post("/inventory/sales_returns", createReturn);
-routerSalesReturns.put("/inventory/sales_returns/:id", updateReturn);
-routerSalesReturns.delete("/inventory/sales_returns/:id", deleteReturn);
+routerSalesReturns.get(
+  "/inventory/sales_returns",
+  authorization,
+  getAllReturns
+);
+routerSalesReturns.get(
+  "/inventory/sales_returns/:id",
+  authorization,
+  getReturn
+);
+routerSalesReturns.post(
+  "/inventory/sales_returns",
+  authorization,
+  createReturn
+);
+routerSalesReturns.put(
+  "/inventory/sales_returns/:id",
+  authorization,
+  updateReturn
+);
+routerSalesReturns.delete(
+  "/inventory/sales_returns/:id",
+  authorization,
+  deleteReturn
+);
 
 module.exports = routerSalesReturns;

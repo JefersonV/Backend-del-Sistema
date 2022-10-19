@@ -8,12 +8,12 @@ const {
   updateSale,
 } = require("../controllers/sales.controllers");
 const routerSales = Router();
-
+const authorization = require("../middleware/authorization");
 routerSales.get("/", home);
 
-routerSales.get("/sales", getAllSales);
-routerSales.get("/sales/:id", getSale);
-routerSales.post("/sales", createSales);
-routerSales.put("/sales/:id", updateSale);
-routerSales.delete("/sales/:id", deleteSale);
+routerSales.get("/sales", authorization, getAllSales);
+routerSales.get("/sales/:id", authorization, getSale);
+routerSales.post("/sales", authorization, createSales);
+routerSales.put("/sales/:id", authorization, updateSale);
+routerSales.delete("/sales/:id", authorization, deleteSale);
 module.exports = routerSales;

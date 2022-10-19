@@ -13,7 +13,6 @@ const routerProviderReturns = require("./routes/provider.returns.routes");
 require("dotenv").config();
 
 const app = express();
-const cors = require("cors");
 
 //middleware
 app.use(express.json()); //req. body
