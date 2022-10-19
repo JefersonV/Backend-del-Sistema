@@ -13,12 +13,13 @@ const routerProviderReturns = require("./routes/provider.returns.routes");
 require("dotenv").config();
 
 const app = express();
+const cors = require("cors");
 
-const PORT = process.env.PORT || 3000;
-
+//middleware
+app.use(express.json()); //req. body
 app.use(cors());
 app.use(morgan("dev"));
-app.use(express.json());
+
 app.use(routerSales);
 app.use(routerInventory);
 app.use(routerRawMaterial);
@@ -33,7 +34,11 @@ app.use((err, req, res, next) => {
     message: err.message,
   });
 });
+//ROUTES
+//register and login routes
+app.use("/auth", require("./routes/jwtAuth"));
+app.use("/home", require("./routes/home"));
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
