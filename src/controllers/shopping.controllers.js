@@ -1,5 +1,5 @@
 const pool = require("../db");
-const { getAllShippingsQ } = require("../querys");
+const { getAllShippingsQ, getShoppingQ } = require("../querys");
 
 //Obtener todas la compras
 const getAllShoppings = async (req, res, next) => {
@@ -15,10 +15,7 @@ const getAllShoppings = async (req, res, next) => {
 const getShopping = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await pool.query(
-      "SELECT * FROM compras WHERE id_compra = $1",
-      [id]
-    );
+    const result = await pool.query(getShoppingQ, [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({

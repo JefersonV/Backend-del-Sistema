@@ -16,7 +16,7 @@ function jwtGenerator(user_id) {
 
   //Retornamos el token
   //primeroParload.seguidoPalabraSecretaDelENV
-  return jwt.sign(payload, process.env.jwtSecret, { expiresIn: "1h" });
+  return jwt.sign(payload, process.env.jwtSecret, { expiresIn: "10h" });
 }
 
 module.exports = jwtGenerator;

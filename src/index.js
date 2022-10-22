@@ -9,10 +9,12 @@ const routerProvider = require("./routes/provider.routes");
 const routerShopping = require("./routes/shopping.routes");
 const routerSalesReturns = require("./routes/sales.returns.routes");
 const routerProviderReturns = require("./routes/provider.returns.routes");
+const routerClient = require("./routes/client.routes");
 
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json()); //req. body
@@ -27,6 +29,7 @@ app.use(routerProvider);
 app.use(routerShopping);
 app.use(routerSalesReturns);
 app.use(routerProviderReturns);
+app.use(routerClient);
 
 app.use((err, req, res, next) => {
   return res.json({
@@ -38,6 +41,6 @@ app.use((err, req, res, next) => {
 app.use("/auth", require("./routes/jwtAuth"));
 app.use("/home", require("./routes/home"));
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

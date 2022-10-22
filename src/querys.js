@@ -16,9 +16,18 @@ const deleteSaleQ = `DELETE FROM venta WHERE id_venta = $1`;
 const updateSaleQ = `SELECT updateSale($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
 
 //Consultas sobre modulo de inventario - Producto
-const getInventoryQ = `SELECT * 
+const getInventoryQ = `SELECT 
+id_inventario_movimiento,
+(select puesto as responsable from usuario where id_usuario = inventario_movimiento.id_usuario),
+fecha,
+tipo_operacion,
+descuento,
+total_operacion,
+(select nombre as modo_pago from modo_pago where id_modo_pago = inventario_movimiento.id_modo_pago),
+(select nombre as cliente from cliente where id_cliente = inventario_movimiento.id_cliente),
+(select nombre as proveedor from proveedor where id_proveedor = inventario_movimiento.id_proveedor)
 FROM inventario_movimiento
-WHERE inventario_movimiento.fecha = '2022-10-14'
+WHERE inventario_movimiento.fecha = '2022-10-19'
 ORDER BY id_inventario_movimiento ASC;`;
 //WHERE inventario_movimiento.fecha = (SELECT CURRENT_DATE);`;
 
@@ -29,10 +38,12 @@ costo_produccion.precio_venta,
 costo_produccion.costo_por_libra AS costo_compra,
 producto.stock_actual, 
 producto.stock_minimo,
-unidad_de_medida.nombre AS unidad_medida
+unidad_de_medida.nombre AS unidad_medida,
+tipo_producto.nombre as tipo_producto
 FROM producto
 INNER JOIN unidad_de_medida ON unidad_de_medida.id_unidad_medida = producto.id_unidad_medida
 INNER JOIN costo_produccion ON costo_produccion.id_unidad_medida = producto.id_unidad_medida
+INNER JOIN tipo_producto ON tipo_producto.id_tipo_producto = producto.tipo_producto
 ORDER BY id_producto ASC`;
 
 //Obtener un solo producto
@@ -131,7 +142,7 @@ WHERE id_empaque = $3;`;
 
 //Elminar un registro
 const deletePackingMaterialQ =
-  "DELETE FROM material_empaque WHERE id_tipo_empaque = $1";
+  "DELETE FROM material_empaque WHERE id_empaque = $1";
 
 //Querys para el submodulo devoluiones sobre compras
 //Obtener todos los registros
@@ -167,27 +178,92 @@ inner join producto on producto.id_producto = venta.id_producto
 ORDER BY devolucion_cliente.id_dev_cliente ASC`;
 
 //Querys para el modulo de compras
-const getAllShippingsQ = `SELECT 
-compras.id_compra,
-compras.fecha,
-compras.cantidad,
-compras.precio_unitario,
-compras.descuento,
-compras.subtotal,
-compras.total,
-compras.no_comprobante,
-compras.observaciones,
-tipo_comprobante.nombre AS tipo_comprobante,
-proveedor.nombre AS proveedor,
-producto.nombre AS producto,
-modo_pago.nombre AS modo_pago,
-usuario.nombre AS usuario
-FROM compras
-INNER JOIN tipo_comprobante ON tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
-INNER JOIN proveedor ON proveedor.id_proveedor = compras.id_proveedor
-INNER JOIN producto ON producto.id_producto = compras.id_producto
-INNER JOIN modo_pago ON modo_pago.id_modo_pago = compras.id_modo_pago
-INNER JOIN usuario ON usuario.id_usuario = compras.id_usuario
+// const getAllShippingsQ = `SELECT
+// compras.id_compra,
+// compras.fecha,
+// compras.cantidad,
+// compras.precio_unitario,
+// compras.descuento,
+// compras.subtotal,
+// compras.total,
+// compras.no_comprobante,
+// compras.observaciones,
+// tipo_comprobante.nombre AS tipo_comprobante,
+// proveedor.nombre AS proveedor,
+// producto.nombre AS producto,
+// modo_pago.nombre AS modo_pago,
+// usuario.nombre AS usuario
+// FROM compras
+// INNER JOIN tipo_comprobante ON tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
+// INNER JOIN proveedor ON proveedor.id_proveedor = compras.id_proveedor
+// INNER JOIN producto ON producto.id_producto = compras.id_producto
+// INNER JOIN modo_pago ON modo_pago.id_modo_pago = compras.id_modo_pago
+// INNER JOIN usuario ON usuario.id_usuario = compras.id_usuario
+// ORDER BY id_compra ASC;`;
+
+//QUERYS PARA TABLA CLIENTES
+//Query para obtener todos los clientes
+
+const getAllClientsQ = `SELECT
+id_cliente,
+nombre,
+telefono,
+correo,
+direccion,
+nit
+FROM cliente`;
+
+//Obtener un solo cliente
+const getClientQ = `SELECT
+id_cliente,
+nombre,
+telefono,
+correo,
+direccion,
+nit
+FROM cliente WHERE id_cliente = $1`;
+
+//Querys para registar clientes
+const insertClient = `INSERT INTO cliente(nombre, telefono, correo, direccion, nit)
+VALUES($1, $2, $3, $4, $5)`;
+
+//Query para actualizar cliente
+const updateClientQ = `UPDATE cliente 
+SET nombre = $1, telefono = $2, correo = $3, direccion = $4, nit = $5
+WHERE id_cliente = $6`;
+
+//Query para eliminar cliente
+const deleteClientQ = `DELETE FROM cliente WHERE id_cliente = $1`;
+
+//QUERY PARA LA TABLA COMPRA
+
+//Query para obtener las compras
+const getAllShippingsQ = `select
+id_compra,
+proveedor.nombre as proveedor,
+fecha,
+total,
+tipo_comprobante.nombre as tipo_comprbante,
+modo_pago.nombre as modo_pago
+from compras
+inner join tipo_comprobante on tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
+inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
+inner join modo_pago on modo_pago.id_modo_pago = compras.id_modo_pago
+ORDER BY id_compra ASC;`;
+
+//Query para obtener una compra
+const getShoppingQ = `select
+id_compra,
+proveedor.nombre as proveedor,
+fecha,
+total,
+tipo_comprobante.nombre as tipo_comprbante,
+modo_pago.nombre as modo_pago
+from compras
+inner join tipo_comprobante on tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
+inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
+inner join modo_pago on modo_pago.id_modo_pago = compras.id_modo_pago
+WHERE id_compra = $1
 ORDER BY id_compra ASC;`;
 
 module.exports = {
@@ -215,4 +291,10 @@ module.exports = {
   getAllShippingsQ,
   getAllReturnsProvidersQ,
   getAllReturnsSalesQ,
+  insertClient,
+  getAllClientsQ,
+  getClientQ,
+  updateClientQ,
+  deleteClientQ,
+  getShoppingQ,
 };
