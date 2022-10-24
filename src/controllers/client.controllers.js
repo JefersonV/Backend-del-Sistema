@@ -35,10 +35,10 @@ const getClient = async (req, res, next) => {
 
 //Registrar clientes
 const createClient = async (req, res, next) => {
-  const { nombre, telefono, correo, direcion, nit } = req.body;
+  const { nombre, telefono, correo, direccion, nit } = req.body;
 
   try {
-    await pool.query(insertClient, [nombre, telefono, correo, direcion, nit]);
+    await pool.query(insertClient, [nombre, telefono, correo, direccion, nit]);
     res.sendStatus(204);
   } catch (error) {
     next(error);
@@ -48,14 +48,14 @@ const createClient = async (req, res, next) => {
 //Actualizar registro de cliente
 const updateClient = async (req, res, next) => {
   const { id } = req.params;
-  const { nombre, telefono, correo, direcion, nit } = req.body;
+  const { nombre, telefono, correo, direccion, nit } = req.body;
 
   try {
     await pool.query(updateClientQ, [
       nombre,
       telefono,
       correo,
-      direcion,
+      direccion,
       nit,
       id,
     ]);

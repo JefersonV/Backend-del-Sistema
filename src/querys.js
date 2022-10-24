@@ -27,7 +27,7 @@ total_operacion,
 (select nombre as cliente from cliente where id_cliente = inventario_movimiento.id_cliente),
 (select nombre as proveedor from proveedor where id_proveedor = inventario_movimiento.id_proveedor)
 FROM inventario_movimiento
-WHERE inventario_movimiento.fecha = '2022-10-19'
+WHERE inventario_movimiento.fecha = (SELECT CURRENT_DATE)
 ORDER BY id_inventario_movimiento ASC;`;
 //WHERE inventario_movimiento.fecha = (SELECT CURRENT_DATE);`;
 
@@ -211,7 +211,8 @@ telefono,
 correo,
 direccion,
 nit
-FROM cliente`;
+FROM cliente
+ORDER BY id_cliente DESC`;
 
 //Obtener un solo cliente
 const getClientQ = `SELECT
