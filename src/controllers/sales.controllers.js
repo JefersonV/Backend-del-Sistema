@@ -1,5 +1,5 @@
 const pool = require("../db");
-const {
+const { 
   getSales,
   getSaleQ,
   deleteSaleQ,
@@ -51,7 +51,7 @@ const createSales = async (req, res, next) => {
     id_modo_pago,
     id_usuario,
   } = req.body;
-
+ 
   try {
     await pool.query(insertSaleQ, [
       cantidad,
