@@ -117,13 +117,18 @@ const updateShopping = async (req, res, next) => {
 const deleteShopping = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await pool.query("", [id]);
-
+    const result = await pool.query(
+      "DELETE FROM inventario_movimiento WHERE id_compra=$1",
+      [id]
+    );
     if (result.rowCount === 0) {
       return res.status(404).json({
         message: "Compra no encontrada",
       });
     }
+    const result2 = await pool.query("DELETE FROM compras WHERE id_compra=$1", [
+      id,
+    ]);
     res.sendStatus(204);
   } catch (error) {
     next(error);
