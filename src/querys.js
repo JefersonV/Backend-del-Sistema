@@ -118,7 +118,7 @@ material_empaque.fecha,
 material_empaque.costo,
 tipo_empaque.nombre
 FROM material_empaque
-INNER JOIN tipo_empaque on tipo_empaque.id_empaque = material_empaque.id_tipo_empaque
+INNER JOIN tipo_empaque on tipo_empaque.id_tipo_empaque = material_empaque.id_tipo_empaque
 ORDER BY id_empaque DESC;`;
 
 //Obtener un solo registro
@@ -128,7 +128,7 @@ material_empaque.fecha,
 material_empaque.costo,
 tipo_empaque.nombre
 FROM material_empaque
-INNER JOIN tipo_empaque on tipo_empaque.id_empaque = material_empaque.id_tipo_empaque
+INNER JOIN tipo_empaque on tipo_empaque.id_tipo_empaque = material_empaque.id_tipo_empaque
 WHERE material_empaque.id_empaque = $1`;
 
 //Ingresar material de empaque
