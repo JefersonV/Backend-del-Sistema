@@ -42,14 +42,14 @@ const getSale = async (req, res, next) => {
 //controlador para crear una venta
 const createSales = async (req, res, next) => {
   const {
-    cantidad,
-    descripcion,
-    descuento,
-    id_factura,
-    id_cliente,
-    id_producto,
-    id_modo_pago,
-    id_usuario,
+      cantidad,
+      descripcion,
+      descuento,
+      id_factura,
+      id_cliente,
+      id_producto,
+      id_modo_pago,
+      id_usuario,
   } = req.body;
 
   try {

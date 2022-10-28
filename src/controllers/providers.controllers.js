@@ -4,7 +4,9 @@ const {} = require("../querys");
 //Obtener todos los registros
 const getAllProviders = async (req, res, next) => {
   try {
-    const result = await pool.query("SELECT * FROM proveedor");
+    const result = await pool.query(
+      "SELECT * FROM proveedor ORDER BY id_proveedor DESC"
+    );
     res.json(result.rows);
   } catch (error) {
     next(error);

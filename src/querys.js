@@ -28,7 +28,7 @@ total_operacion,
 (select nombre as proveedor from proveedor where id_proveedor = inventario_movimiento.id_proveedor)
 FROM inventario_movimiento
 WHERE inventario_movimiento.fecha = (SELECT CURRENT_DATE)
-ORDER BY id_inventario_movimiento ASC;`;
+ORDER BY id_inventario_movimiento DESC;`;
 //WHERE inventario_movimiento.fecha = (SELECT CURRENT_DATE);`;
 
 const getAllProductsQ = `SELECT
@@ -44,7 +44,7 @@ FROM producto
 INNER JOIN unidad_de_medida ON unidad_de_medida.id_unidad_medida = producto.id_unidad_medida
 INNER JOIN costo_produccion ON costo_produccion.id_unidad_medida = producto.id_unidad_medida
 INNER JOIN tipo_producto ON tipo_producto.id_tipo_producto = producto.tipo_producto
-ORDER BY id_producto ASC`;
+ORDER BY id_producto DESC`;
 
 //Obtener un solo producto
 const getProductQ = `SELECT
@@ -83,7 +83,7 @@ unidad_de_medida.nombre AS unidad_medida
 FROM materia_prima
 INNER JOIN unidad_de_medida ON unidad_de_medida.id_unidad_medida = materia_prima.id_unidad_medida
 INNER JOIN tipo_materia_prima ON tipo_materia_prima.id_tipo_materia = materia_prima.id_tipo_materia
-ORDER BY id_materia_prima ASC;`;
+ORDER BY id_materia_prima DESC;`;
 
 //Obtener un solo registro
 const getRawMaterialQ = `SELECT 
@@ -119,7 +119,7 @@ material_empaque.costo,
 tipo_empaque.nombre
 FROM material_empaque
 INNER JOIN tipo_empaque on tipo_empaque.id_empaque = material_empaque.id_tipo_empaque
-ORDER BY id_empaque ASC;`;
+ORDER BY id_empaque DESC;`;
 
 //Obtener un solo registro
 const getPackingMaterialQ = `
@@ -159,7 +159,7 @@ inner join transportista on transportista.id_transportista = devolucion_proveedo
 inner join compras on compras.id_compra = devolucion_proveedor.id_compra
 inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
 inner join producto on producto.id_producto = compras.id_producto
-ORDER BY devolucion_proveedor.id_devolucion_proveedor ASC;`;
+ORDER BY devolucion_proveedor.id_devolucion_proveedor DESC;`;
 
 //Querys para el submodulo dev sobre ventas
 //Obtener todos los registros
@@ -175,7 +175,7 @@ from devolucion_cliente
 inner join cliente ON cliente.id_cliente = devolucion_cliente.id_cliente
 inner join venta on venta.id_venta = devolucion_cliente.id_venta
 inner join producto on producto.id_producto = venta.id_producto
-ORDER BY devolucion_cliente.id_dev_cliente ASC`;
+ORDER BY devolucion_cliente.id_dev_cliente DESC`;
 
 //Querys para el modulo de compras
 // const getAllShippingsQ = `SELECT
@@ -250,7 +250,7 @@ from compras
 inner join tipo_comprobante on tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
 inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
 inner join modo_pago on modo_pago.id_modo_pago = compras.id_modo_pago
-ORDER BY id_compra ASC;`;
+ORDER BY id_compra DESC;`;
 
 //Query para obtener una compra
 const getShoppingQ = `select
@@ -265,7 +265,20 @@ inner join tipo_comprobante on tipo_comprobante.id_tipo_comprobante = compras.id
 inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
 inner join modo_pago on modo_pago.id_modo_pago = compras.id_modo_pago
 WHERE id_compra = $1
-ORDER BY id_compra ASC;`;
+ORDER BY id_compra DESC;`;
+
+`INSERT INTO 
+compras(fecha, cantidad, precio_unitario, descuento, subtotal, 
+  total, no_comprobante, observaciones, id_tipo_comprobante, 
+  id_proveedor, id_producto, id_modo_pago) 
+VALUES (CURRENT_DATE, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+
+//Actualizar una compra
+const updateShoppingQ = `UPDATE compras 
+SET fecha = CURRENT_DATE, cantidad = $1, precio_unitario = $2, descuento = $3, 
+subtotal = $4, total = $5, no_comprobante = $6, observaciones = $7, id_tipo_comprobante = $8,
+id_proveedor = $9, id_producto=$10, id_modo_pago=$11
+WHERE id_compra = $12`;
 
 module.exports = {
   getSales,
@@ -298,4 +311,5 @@ module.exports = {
   updateClientQ,
   deleteClientQ,
   getShoppingQ,
+  updateShoppingQ,
 };

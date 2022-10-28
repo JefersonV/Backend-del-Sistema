@@ -10,10 +10,10 @@ const {
 const routerClient = Router();
 const authorization = require("../middleware/authorization");
 
-routerClient.get("/costumers", authorization, getAllClients);
-routerClient.get("/costumers/:id", authorization, getClient);
-routerClient.post("/costumers/", authorization, createClient);
-routerClient.put("/costumers/:id", authorization, updateClient);
-routerClient.delete("/costumers/:id", authorization, deleteClient);
+routerClient.get("/customers", authorization, getAllClients);
+routerClient.get("/customers/:id", authorization, getClient);
+routerClient.post("/customers/", authorization, createClient);
+routerClient.put("/customers/:id", authorization, updateClient);
+routerClient.delete("/customers/:id", authorization, deleteClient);
 
 module.exports = routerClient;
