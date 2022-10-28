@@ -13,17 +13,17 @@ const home = (req, res) => {
 };
 
 //controlador obtener todas la ventas
-const getAllSales = async (req, res) => {
+const getAllSales = async (req, res, next) => {
   try {
     const allSales = await pool.query(getSales);
     res.json(allSales.rows);
   } catch (error) {
-    console.log(error.message);
+    next(error);
   }
 };
 
 //controlador obtener una venta en especifico
-const getSale = async (req, res) => {
+const getSale = async (req, res, next) => {
   const { id } = req.params;
   try {
     const result = await pool.query(getSaleQ, [id]);
@@ -34,20 +34,22 @@ const getSale = async (req, res) => {
       });
     }
     res.json(result.rows[0]);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 //controlador para crear una venta
-const createSales = async (req, res) => {
+const createSales = async (req, res, next) => {
   const {
-    cantidad,
-    descripcion,
-    descuento,
-    id_factura,
-    id_cliente,
-    id_producto,
-    id_modo_pago,
-    id_usuario,
+      cantidad,
+      descripcion,
+      descuento,
+      id_factura,
+      id_cliente,
+      id_producto,
+      id_modo_pago,
+      id_usuario,
   } = req.body;
 
   try {
@@ -63,12 +65,12 @@ const createSales = async (req, res) => {
     ]);
     res.sendStatus(204);
   } catch (error) {
-    res.sendStatus(500);
+    next(error);
   }
 };
 
 //contralador para actulizar una venta
-const updateSale = async (req, res) => {
+const updateSale = async (req, res, next) => {
   const { id } = req.params;
   const {
     cantidad,
@@ -95,21 +97,25 @@ const updateSale = async (req, res) => {
     ]);
     res.sendStatus(200);
   } catch (error) {
-    res.sendStatus(500);
+    next(error);
   }
 };
 
 //controlador para eliminar una venta
-const deleteSale = async (req, res) => {
+const deleteSale = async (req, res, next) => {
   const { id } = req.params;
-  const result = await pool.query(deleteSaleQ, [id]);
+  try {
+    const result = await pool.query(deleteSaleQ, [id]);
 
-  if (result.rowCount === 0) {
-    return res.status(404).json({
-      message: "Venta no encontrada",
-    });
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: "Venta no encontrada",
+      });
+    }
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
   }
-  res.sendStatus(204);
 };
 
 module.exports = {
