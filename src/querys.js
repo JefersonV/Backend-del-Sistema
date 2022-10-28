@@ -167,28 +167,25 @@ inner join producto on producto.id_producto = venta.id_producto
 ORDER BY devolucion_cliente.id_dev_cliente ASC`;
 
 //Querys para el modulo de compras
-const getAllShippingsQ = `SELECT 
-compras.id_compra,
-compras.fecha,
-compras.cantidad,
-compras.precio_unitario,
-compras.descuento,
-compras.subtotal,
-compras.total,
-compras.no_comprobante,
-compras.observaciones,
-tipo_comprobante.nombre AS tipo_comprobante,
-proveedor.nombre AS proveedor,
-producto.nombre AS producto,
-modo_pago.nombre AS modo_pago,
-usuario.nombre AS usuario
-FROM compras
-INNER JOIN tipo_comprobante ON tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
-INNER JOIN proveedor ON proveedor.id_proveedor = compras.id_proveedor
-INNER JOIN producto ON producto.id_producto = compras.id_producto
-INNER JOIN modo_pago ON modo_pago.id_modo_pago = compras.id_modo_pago
-INNER JOIN usuario ON usuario.id_usuario = compras.id_usuario
-ORDER BY id_compra ASC;`;
+const getAllShippingsQ = `
+select
+	id_compra,
+	proveedor.nombre as proveedor,
+	fecha,
+	total,
+	tipo_comprobante.nombre as tipo_comprbante,
+	modo_pago.nombre as modo_pago
+from compras
+	inner join tipo_comprobante on tipo_comprobante.id_tipo_comprobante = compras.id_tipo_comprobante
+	inner join proveedor on proveedor.id_proveedor = compras.id_proveedor
+	inner join modo_pago on modo_pago.id_modo_pago = compras.id_modo_pago
+	ORDER BY id_compra DESC;`;
+
+const updateShoppingQ = `UPDATE compras 
+SET fecha = CURRENT_DATE, cantidad = $1, precio_unitario = $2, descuento = $3, 
+subtotal = $4, total = $5, no_comprobante = $6, observaciones = $7, id_tipo_comprobante = $8,
+id_proveedor = $9, id_producto=$10, id_modo_pago=$11
+WHERE id_compra=$12;`;
 
 module.exports = {
   getSales,
@@ -215,4 +212,5 @@ module.exports = {
   getAllShippingsQ,
   getAllReturnsProvidersQ,
   getAllReturnsSalesQ,
+  updateShoppingQ,
 };
