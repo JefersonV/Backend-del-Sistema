@@ -34,7 +34,7 @@ ORDER BY id_inventario_movimiento DESC;`;
 const getAllProductsQ = `SELECT
 producto.id_producto, 
 producto.nombre AS producto, 
-costo_produccion.precio_venta,
+producto.precio_venta,
 costo_produccion.costo_por_libra AS costo_compra,
 producto.stock_actual, 
 producto.stock_minimo,
@@ -50,7 +50,7 @@ ORDER BY id_producto DESC`;
 const getProductQ = `SELECT
 producto.id_producto, 
 producto.nombre AS producto, 
-costo_produccion.precio_venta,
+producto.precio_venta,
 costo_produccion.costo_por_libra AS costo_compra,
 producto.stock_actual, 
 producto.stock_minimo,
@@ -280,6 +280,36 @@ subtotal = $4, total = $5, no_comprobante = $6, observaciones = $7, id_tipo_comp
 id_proveedor = $9, id_producto=$10, id_modo_pago=$11
 WHERE id_compra = $12`;
 
+//Querys para el dashboard
+//Obtener el total de las ventas para el mes en curso
+// const sumaTotalVentasMes = `select getSumaTotalVentasMes($1) as suma_total;`;
+const sumaTotalVentasMes = `select sum(total) as suma_total
+from venta
+where fecha between $1 and current_date;`;
+// where fecha between '2022-10-01' and '2022-10-31';`;
+
+//Obtener el total de las bolsas vendidas para el mes en curso
+const bolsasVendidas = `select sum(cantidad) as bolsas_vendidas
+from venta
+where fecha between $1 and current_date;`;
+// where fecha between '2022-10-01' and '2022-10-31';`;
+
+//Obtener las bolsas disponibles para la venta
+const bolsasDisponibles = `select sum(stock_actual) as bolsas_disponibles
+from producto;`;
+
+//Obtener los clientes frecuentes
+const clientesFrecuentes = `select cliente.nombre, venta.id_cliente, count(venta.id_cliente) as veces
+from venta
+inner join cliente on cliente.id_cliente = venta.id_cliente
+where fecha between $1 and current_date
+group by venta.id_cliente, cliente.nombre;`;
+// where fecha between '2022-10-01' and '2022-10-31'
+
+//Obtener el total de las ventas de hoy
+const sumaVentasHoy = `select sum(total) as venta_total 
+from venta where fecha = current_date;`;
+
 module.exports = {
   getSales,
   getSaleQ,
@@ -312,4 +342,9 @@ module.exports = {
   deleteClientQ,
   getShoppingQ,
   updateShoppingQ,
+  sumaTotalVentasMes,
+  bolsasVendidas,
+  bolsasDisponibles,
+  clientesFrecuentes,
+  sumaVentasHoy,
 };
