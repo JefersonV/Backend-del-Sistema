@@ -1,10 +1,10 @@
 const pool = require("../db");
 const {
-    getAllParcking,
-    getParcking,
-    insertPacking,
-    updatePacking,
-    deletePacking,
+  getAllParcking,
+  getParcking,
+  insertPacking,
+  updatePacking,
+  deletePacking,
 } = require("../querys");
 
 //Obtener todas los materiales de empaque
@@ -35,9 +35,9 @@ const getPackingMaterial = async (req, res, next) => {
 
 //Crear o ingresar material de empque
 const createPackingMaterial = async (req, res, next) => {
-  const { costo_empaque, tipo_empaque } = req.body;
+  const { costo, tipo_empaque } = req.body;
   try {
-    await pool.query(insertPacking, [costo_empaque, tipo_empaque]);
+    await pool.query(insertPacking, [costo, tipo_empaque]);
     res.sendStatus(204);
   } catch (error) {
     next(error);
