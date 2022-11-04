@@ -12,6 +12,11 @@ const routerProviderReturns = require("./routes/provider.returns.routes");
 const routerClient = require("./routes/client.routes");
 const routerDashboard = require("./routes/dashboard.routes");
 
+const routerRawMaterialProduction=require("./routes/raw.material.production.routes");
+const routePackingProduction = require("./routes/packing.routes");
+const routeProduction = require("./routes/production.routes");
+const routeService = require("./routes/service.routes");
+
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +37,11 @@ app.use(routerSalesReturns);
 app.use(routerProviderReturns);
 app.use(routerClient);
 app.use(routerDashboard);
+
+app.use(routerRawMaterialProduction);
+app.use(routePackingProduction);
+app.use(routeProduction);
+app.use(routeService);
 
 app.use((err, req, res, next) => {
   return res.json({
