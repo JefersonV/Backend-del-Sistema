@@ -115,7 +115,7 @@ const deleteRawMaterialQ =
 const getAllPackingMaterialQ = `
 SELECT material_empaque.id_empaque,
 material_empaque.fecha,
-material_empaque.costo,
+material_empaque.costo_empaque,
 tipo_empaque.nombre
 FROM material_empaque
 INNER JOIN tipo_empaque on tipo_empaque.id_tipo_empaque = material_empaque.id_tipo_empaque
@@ -125,7 +125,7 @@ ORDER BY id_empaque DESC;`;
 const getPackingMaterialQ = `
 SELECT material_empaque.id_empaque,
 material_empaque.fecha,
-material_empaque.costo,
+material_empaque.costo_empaque,
 tipo_empaque.nombre
 FROM material_empaque
 INNER JOIN tipo_empaque on tipo_empaque.id_tipo_empaque = material_empaque.id_tipo_empaque
