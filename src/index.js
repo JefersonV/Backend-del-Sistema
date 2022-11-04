@@ -10,6 +10,7 @@ const routerShopping = require("./routes/shopping.routes");
 const routerSalesReturns = require("./routes/sales.returns.routes");
 const routerProviderReturns = require("./routes/provider.returns.routes");
 const routerClient = require("./routes/client.routes");
+const routerDashboard = require("./routes/dashboard.routes");
 
 const routerRawMaterialProduction=require("./routes/raw.material.production.routes");
 const routePackingProduction = require("./routes/packing.routes");
@@ -35,6 +36,7 @@ app.use(routerShopping);
 app.use(routerSalesReturns);
 app.use(routerProviderReturns);
 app.use(routerClient);
+app.use(routerDashboard);
 
 app.use(routerRawMaterialProduction);
 app.use(routePackingProduction);
