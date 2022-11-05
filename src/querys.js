@@ -1,11 +1,11 @@
 //Query que llama una funcion desde postgres para obtener todas las ventas
-const getSales = `SELECT * FROM getallsales()`;
+const getSales = `select * from getAllSales() ORDER BY id_venta DESC; `;
 
 //Query que llama una funcion desde postgres para obtener una  venta por id
 const getSaleQ = `SELECT * FROM getsale($1)`;
 
 //Query que llama una funcion desde postgres para insertar una venta
-const insertSaleQ = `SELECT insertSale($1, $2, $3, $4, $5, $6, $7, $8)`;
+const insertSaleQ = `SELECT insertSale($1, $2, $3, $4, $5, $6, $7)`;
 
 //Query para eliminar una venta por id
 const deleteSaleQ = `DELETE FROM venta WHERE id_venta = $1`;

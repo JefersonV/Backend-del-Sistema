@@ -42,14 +42,13 @@ const getSale = async (req, res, next) => {
 //controlador para crear una venta
 const createSales = async (req, res, next) => {
   const {
-      cantidad,
-      descripcion,
-      descuento,
-      id_factura,
-      id_cliente,
-      id_producto,
-      id_modo_pago,
-      id_usuario,
+    cantidad,
+    descripcion,
+    descuento,
+    id_factura,
+    id_cliente,
+    id_producto,
+    id_modo_pago,
   } = req.body;
 
   try {
@@ -61,7 +60,6 @@ const createSales = async (req, res, next) => {
       id_cliente,
       id_producto,
       id_modo_pago,
-      id_usuario,
     ]);
     res.sendStatus(204);
   } catch (error) {
@@ -80,7 +78,6 @@ const updateSale = async (req, res, next) => {
     id_cliente,
     id_producto,
     id_modo_pago,
-    id_usuario,
   } = req.body;
 
   try {
@@ -93,7 +90,6 @@ const updateSale = async (req, res, next) => {
       id_cliente,
       id_producto,
       id_modo_pago,
-      id_usuario,
     ]);
     res.sendStatus(200);
   } catch (error) {
